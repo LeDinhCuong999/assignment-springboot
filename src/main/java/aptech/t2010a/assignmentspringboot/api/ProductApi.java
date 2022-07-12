@@ -24,7 +24,7 @@ public class ProductApi {
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public Product findById(@PathVariable UUID id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
         if(optionalProduct.isPresent()){
             return optionalProduct.get();
         }
@@ -39,7 +39,7 @@ public class ProductApi {
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     public boolean deleteById(@PathVariable UUID id){
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
         if(optionalProduct.isPresent()){
             Product Product = optionalProduct.get();
             productRepository.delete(Product);
@@ -49,7 +49,7 @@ public class ProductApi {
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public Product updateById(@RequestBody Product updateProduct, @PathVariable UUID id){
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
         if(optionalProduct.isPresent()){
             Product existingProduct = optionalProduct.get();
             existingProduct.setName(updateProduct.getName());

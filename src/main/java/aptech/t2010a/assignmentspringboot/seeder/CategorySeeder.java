@@ -27,7 +27,7 @@ public class CategorySeeder {
         categories = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_CATEGORY; i++) {
             categories.add(Category.builder()
-                    .id(UUID.randomUUID())
+                    .id(String.valueOf(UUID.randomUUID()))
                     .name(faker.name().name())
                     .build());
         }

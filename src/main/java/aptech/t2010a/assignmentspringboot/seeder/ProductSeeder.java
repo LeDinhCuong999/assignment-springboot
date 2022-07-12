@@ -33,7 +33,7 @@ public class ProductSeeder {
         products = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_PRODUCT; i++) {
             products.add(Product.builder()
-                    .id(UUID.randomUUID())
+                    .id(String.valueOf(UUID.randomUUID()))
                     .name(faker.name().name())
                     .price(new BigDecimal(NumberUtil.getRandomNumber(100, 1000) * 1000))
                     .thumbnails(faker.avatar().image())

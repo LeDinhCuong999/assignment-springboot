@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Product extends BaseEntity {
 
     @Id
-    private UUID id;
+    private String id;
     private String name;
     private String detail;
     private String thumbnails;
