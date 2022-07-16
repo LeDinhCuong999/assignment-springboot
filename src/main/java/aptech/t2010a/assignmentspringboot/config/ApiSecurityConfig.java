@@ -41,7 +41,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(apiAuthenticationFilter);
         http.addFilterBefore(new ApiAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
+    {}
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{

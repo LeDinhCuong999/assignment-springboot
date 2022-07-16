@@ -15,24 +15,19 @@ import java.util.UUID;
 @Slf4j
 public class CategorySeeder {
 
-    public static List<Category> categories;
-    public static final int NUMBER_OF_CATEGORY = 20;
-
     @Autowired
     CategoryRepository categoryRepository;
+    Faker faker = new Faker();
+    public static List<Category> categoryList = new ArrayList<>();
+    public static final int NUMBER_OF_CATEGORY = 10;
 
-    public void generate() {
-        log.debug("------------Seeding category-------------");
-        Faker faker = new Faker();
-        categories = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_CATEGORY; i++) {
-            categories.add(Category.builder()
-                    .id(String.valueOf(UUID.randomUUID()))
-                    .name(faker.name().name())
-                    .build());
+    public void generate(){
+        for (int i = 0; i < NUMBER_OF_CATEGORY; i++){
+            Category category = new Category();
+            category.setId(UUID.randomUUID().toString());
+            category.setName(faker.leagueOfLegends().rank());
+            categoryList.add(category);
         }
-        categoryRepository.saveAll(categories);
-        log.debug("--------------End of seeding category-------------");
+        categoryRepository.saveAll(categoryList);
     }
-
 }

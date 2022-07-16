@@ -2,6 +2,7 @@ package aptech.t2010a.assignmentspringboot.entity;
 
 import aptech.t2010a.assignmentspringboot.entity.base.BaseEntity;
 import aptech.t2010a.assignmentspringboot.entity.enums.OrderSimpleStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +20,10 @@ import java.util.UUID;
 public class Order extends BaseEntity {
     @Id
     private String id;
-    private int userId;//0
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "account_id")
+    @JsonManagedReference
+    private Account account;
     private BigDecimal totalPrice;
     @Enumerated(EnumType.ORDINAL)
     private OrderSimpleStatus status;

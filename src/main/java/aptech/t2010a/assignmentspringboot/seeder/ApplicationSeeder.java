@@ -10,22 +10,21 @@ import java.util.logging.Logger;
 @Component
 public class ApplicationSeeder implements CommandLineRunner {
 
-    private boolean createNewSeed = true;
-    private static Logger logger = Logger.getLogger(ApplicationSeeder.class.getSimpleName());
-
-
-    @Autowired
-    ProductSeeder productSeeder;
-
     @Autowired
     CategorySeeder categorySeeder;
+    @Autowired
+    ProductSeeder productSeeder;
+    @Autowired
+    OrderSeeder orderSeeder;
+
+    @Autowired
+    AccountSeeder accountSeeder;
 
     @Override
-    public void run(String... args) throws Exception {
-        if (createNewSeed) {
-            logger.log(Level.SEVERE, "Start seeding");
-            productSeeder.generate();
-            categorySeeder.generate();
-        }
+    public void run(String... args) {
+        accountSeeder.generate();
+        categorySeeder.generate();
+        productSeeder.generate();
+        orderSeeder.generate();
     }
 }

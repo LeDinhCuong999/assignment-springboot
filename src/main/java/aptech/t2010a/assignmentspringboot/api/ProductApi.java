@@ -3,9 +3,12 @@ package aptech.t2010a.assignmentspringboot.api;
 
 import aptech.t2010a.assignmentspringboot.entity.Product;
 import aptech.t2010a.assignmentspringboot.repository.ProductRepository;
+import aptech.t2010a.assignmentspringboot.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,50 +18,40 @@ import java.util.UUID;
 public class ProductApi {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Product> findAll(){
-        return productRepository.findAll();
+    public Page<Product> findAll(@RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "limit", defaultValue = "10") int limit){
+        return productService.findAllByActive(page, limit);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public Product findById(@PathVariable UUID id) {
-        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
-        if(optionalProduct.isPresent()){
-            return optionalProduct.get();
-        }
-        return null;
+    @RequestMapping(value = "search_by_name", method = RequestMethod.POST)
+    public Page<Product> SearchByName(@RequestParam(name = "searchStr", defaultValue = "") String search,
+                                      @RequestParam(name = "page", defaultValue = "0") int page,
+                                      @RequestParam(name = "limit", defaultValue = "10") int limit){
+        return productService.searchByName(search, page, limit);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Product create(@RequestBody Product Product){
-        productRepository.save(Product);
-        return Product;
+    @RequestMapping(value = "search_by_price", method = RequestMethod.POST)
+    public Page<Product> SearchByPrice(@RequestParam(name = "price", defaultValue = "0") BigDecimal price,
+                                       @RequestParam(name = "page", defaultValue = "0") int page,
+                                       @RequestParam(name = "limit", defaultValue = "10") int limit){
+        return productService.searchByPrice(price, page, limit);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public boolean deleteById(@PathVariable UUID id){
-        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
-        if(optionalProduct.isPresent()){
-            Product Product = optionalProduct.get();
-            productRepository.delete(Product);
-        }
-        return false;
+    @RequestMapping(value = "search_by_category", method = RequestMethod.POST)
+    public Page<Product> SearchByCategory(@RequestParam(name = "cate", defaultValue = "") String search,
+                                          @RequestParam(name = "page", defaultValue = "0") int page,
+                                          @RequestParam(name = "limit", defaultValue = "10") int limit){
+        return productService.searchByCategoryName(search, page, limit);
     }
 
-    @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public Product updateById(@RequestBody Product updateProduct, @PathVariable UUID id){
-        Optional<Product> optionalProduct = productRepository.findById(String.valueOf(id));
-        if(optionalProduct.isPresent()){
-            Product existingProduct = optionalProduct.get();
-            existingProduct.setName(updateProduct.getName());
-            existingProduct.setDetail(updateProduct.getDetail());
-            existingProduct.setThumbnails(updateProduct.getThumbnails());
-            existingProduct.setPrice(updateProduct.getPrice());
-            existingProduct.setStatus(updateProduct.getStatus());
-            productRepository.save(existingProduct);
-        }
-        return null;
+    @RequestMapping(value = "search_by_price_between", method = RequestMethod.POST)
+    public Page<Product> SearchByPriceBetween(@RequestParam(name = "min", defaultValue = "0") BigDecimal min,
+                                              @RequestParam(name = "max", defaultValue = "0") BigDecimal max,
+                                              @RequestParam(name = "page", defaultValue = "0") int page,
+                                              @RequestParam(name = "limit", defaultValue = "10") int limit){
+        return productService.searchByPriceBetween(min, max, page, limit);
     }
 }

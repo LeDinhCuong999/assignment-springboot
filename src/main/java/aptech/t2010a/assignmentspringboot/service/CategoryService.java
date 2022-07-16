@@ -1,7 +1,6 @@
 package aptech.t2010a.assignmentspringboot.service;
 
 import aptech.t2010a.assignmentspringboot.repository.CategoryRepository;
-import aptech.t2010a.assignmentspringboot.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -54,7 +54,7 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // trả về access token
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
-            throws IOException, ServletException {
+            throws IOException{
         User user = (User) authResult.getPrincipal(); //yêu cầu người dùng đăng nhập thành công
         // generate tokens
         String accessToken = JwtUtil.generateToken(user.getUsername(),

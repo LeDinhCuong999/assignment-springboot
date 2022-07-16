@@ -1,9 +1,6 @@
 package aptech.t2010a.assignmentspringboot.seeder;
 
-import aptech.t2010a.assignmentspringboot.entity.Order;
-import aptech.t2010a.assignmentspringboot.entity.OrderDetail;
-import aptech.t2010a.assignmentspringboot.entity.OrderDetailId;
-import aptech.t2010a.assignmentspringboot.entity.Product;
+import aptech.t2010a.assignmentspringboot.entity.*;
 import aptech.t2010a.assignmentspringboot.entity.enums.OrderSimpleStatus;
 import aptech.t2010a.assignmentspringboot.repository.OrderRepository;
 import aptech.t2010a.assignmentspringboot.util.NumberUtil;
@@ -19,7 +16,7 @@ import java.util.*;
 public class OrderSeeder {
     @Autowired
     OrderRepository orderRepository;
-    public static List<Order> orders;
+    public static List<Order> orders = new ArrayList<>();
     public static final int NUMBER_OF_ORDER = 100;
     public static final int NUMBER_OF_DONE = 60;
     public static final int NUMBER_OF_CANCEL = 20;
@@ -29,16 +26,19 @@ public class OrderSeeder {
     public static final int MIN_PRODUCT_QUANTITY = 1;
     public static final int MAX_PRODUCT_QUANTITY = 5;
 
+    public static final int MIN_ACCOUNT = 0;
+    public static final int MAX_ACCOUNT = 10;
     public void generate(){
         log.debug("------------Seeding order-------------");
         Faker faker = new Faker();
-        orders = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_ORDER; i++) {
+            int UserIndex = NumberUtil.getRandomNumber(MIN_ACCOUNT, MAX_ACCOUNT);
+            Account account = AccountSeeder.accountList.get(UserIndex);
             // Tạo mới đơn hàng.
             Order order = new Order();
-            order.setId(String.valueOf(UUID.fromString(UUID.randomUUID().toString())));
+            order.setId(UUID.randomUUID().toString());
             order.setShoppingCart(false);
-            order.setUserId(0);
+            order.setAccount(account);
             order.setStatus(OrderSimpleStatus.DONE);
             // Tạo danh sách order detail cho đơn hàng.
             Set<OrderDetail> orderDetails = new HashSet<>();

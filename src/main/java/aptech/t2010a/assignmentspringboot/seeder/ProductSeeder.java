@@ -1,6 +1,7 @@
 package aptech.t2010a.assignmentspringboot.seeder;
 
 
+import aptech.t2010a.assignmentspringboot.entity.Category;
 import aptech.t2010a.assignmentspringboot.entity.enums.ProductStatus;
 import aptech.t2010a.assignmentspringboot.repository.CategoryRepository;
 import aptech.t2010a.assignmentspringboot.repository.ProductRepository;
@@ -20,28 +21,26 @@ import java.util.UUID;
 @Slf4j
 public class ProductSeeder {
 
-    public static List<Product> products;
-    public static final int NUMBER_OF_PRODUCT = 50;
-
-
     @Autowired
     ProductRepository productRepository;
-
-    public void generate() {
-        log.debug("------------Seeding product-------------");
-        Faker faker = new Faker();
-        products = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_PRODUCT; i++) {
-            products.add(Product.builder()
-                    .id(String.valueOf(UUID.randomUUID()))
-                    .name(faker.name().name())
-                    .price(new BigDecimal(NumberUtil.getRandomNumber(100, 1000) * 1000))
-                    .thumbnails(faker.avatar().image())
-                    .detail(faker.lorem().sentence())
-                    .status(ProductStatus.ACTIVE)
-                    .build());
+    Faker faker = new Faker();
+    public static List<Product> products = new ArrayList<>();
+    public static final int NUMBER_OF_PRODUCT = 50;
+    public void generate(){
+        for (int i = 0; i < NUMBER_OF_PRODUCT; i++){
+            int randomCateIndex = faker.number().numberBetween(0, CategorySeeder.categoryList.size() -1);
+            Category category = CategorySeeder.categoryList.get(randomCateIndex);
+            Product product = new Product();
+            product.setId(UUID.randomUUID().toString() + i);
+            product.setName(String.valueOf(faker.leagueOfLegends()));
+            product.setDescription(faker.lorem().sentence());
+            product.setDetail(faker.lorem().sentence());
+            product.setThumbnails(faker.avatar().image());
+            product.setStatus(ProductStatus.ACTIVE);
+            product.setPrice(new BigDecimal(faker.number().numberBetween(10, 200) * 10000));
+            product.setCategory(category);
+            products.add(product);
         }
         productRepository.saveAll(products);
-        log.debug("--------------End of seeding product-------------");
     }
 }

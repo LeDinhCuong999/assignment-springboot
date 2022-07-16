@@ -23,7 +23,7 @@ public class OrderDetail {
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private Order order;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("productId")
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
